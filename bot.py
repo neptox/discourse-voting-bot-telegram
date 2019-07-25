@@ -1,4 +1,5 @@
 from telethon.sync import TelegramClient, events
+from telethon.tl.types import ChannelParticipantsAdmins
 import json
 import logging
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
@@ -16,22 +17,27 @@ bot_token = secret["token"]
 # We have to manually call "start" if we want an explicit bot token
 bot = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
-@bot.on(events.NewMessage(pattern='/start@'+bot.get_me().username))
+admins = client.get_participants(chat, filter=ChannelParticipantsAdmins)
+
+@bot.on(events.NewMessage(from_users=admins,pattern='/start'+'@'+'bot.get_me().username))
 async def start(event):
     """Send a message when the command /start is issued."""
     await event.respond('Hi!')
     raise events.StopPropagation
 
-@bot.on(events.NewMessage(pattern='/commands'))
+@bot.on(events.NewMessage(pattern='/help'+'@'+'bot.get_me().username))
 async def start(event):
-    """Send a message when the command /start is issued."""
-    await event.respond("Initiating commands /tip & /withdraw have a specfic format,\n use them like so:" + "\n \n Parameters: \n <user> = target user to tip \n <amount> = amount of powerledger to utilise \n <address> = powerledger address to withdraw to \n \n Tipping format: \n /tip <user> <amount> \n \n Withdrawing format: \n /withdraw <address> <amount>")
+    """Send a message when the command /help is issued."""
+    await event.respond("The following commands are at your disposal: /start, /tip and /balance \n \n Initiating command /tip has a specfic format,\n use it like so:" + "\n \n Parameters: \n <user> = target user to tip \n <amount> = amount of votes to send \n \n Tipping format: \n /tip <user> <amount>")
     raise events.StopPropagation
 
-@bot.on(events.NewMessage)
-async def echo(event):
-    """Echo the user message."""
-    await event.respond(event.text)
+@bot.on(events.NewMessage(pattern='/tip'+'@'+'bot.get_me().username))
+async def start(event):
+    """Send a message when the command /tip is issued."""
+    await event.respond("The following commands are at your disposal: /start, /tip and /balance \n \n Initiating command /tip has a specfic format,\n use it like so:" + "\n \n Parameters: \n <user> = target user to tip \n <amount> = amount of votes to send \n \n Tipping format: \n /tip <user> <amount>")
+    raise events.StopPropagation
+
+
 
 def main():
     """Start the bot."""
@@ -45,13 +51,7 @@ if __name__ == '__main__':
 
 
 
-# def commands(bot, update):
-# 	user = update.message.from_user.username
-# 	bot.send_message(chat_id=update.message.chat_id, text="Initiating commands /tip & /withdraw have a specfic format,\n use them like so:" + "\n \n Parameters: \n <user> = target user to tip \n <amount> = amount of powerledger to utilise \n <address> = powerledger address to withdraw to \n \n Tipping format: \n /tip <user> <amount> \n \n Withdrawing format: \n /withdraw <address> <amount>")
-#
-# def help(bot, update):
-# 	bot.send_message(chat_id=update.message.chat_id, text="The following commands are at your disposal: /hi , /commands , /deposit , /tip , /withdraw , /price , /marketcap or /balance")
-#
+
 # def deposit(bot, update):
 # 	user = update.message.from_user.username
 # 	if user is None:
@@ -128,10 +128,3 @@ if __name__ == '__main__':
 # 		else:
 # 			amount = str(amount)
 # 			bot.send_message(chat_id=update.message.chat_id, text="@{0} has successfully withdrew to address: {1} of {2} VOTES" .format(user,address,amount))
-#
-# def hi(bot,update):
-# 	user = update.message.from_user.username
-# 	bot.send_message(chat_id=update.message.chat_id, text="Hello @{0}, how are you doing today?".format(user))
-#
-# def moon(bot,update):
-#   bot.send_message(chat_id=update.message.chat_id, text="Moon mission inbound!")
