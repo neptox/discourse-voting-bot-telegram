@@ -1,6 +1,6 @@
-# PowrTipbot - Telegram Unofficial Powerledger Tipbot.
+# DiscourseVotingBot - Telegram Unofficial Discourse Tipbot.
  
-#### Powerledger crypto currency tipbot for [Telegram](https://telegram.org)
+#### DiscourseVotingBot tipbot for [Telegram](https://telegram.org)
 
 
 ## Dependencies 
