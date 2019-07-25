@@ -24,13 +24,13 @@ async def start(event):
     await event.respond('Hi!')
     raise events.StopPropagation
 
-@bot.on(events.NewMessage(pattern='/help'+'@'+'bot.get_me().username))
+@bot.on(events.NewMessage(pattern='/help'+'@'+bot.get_me().username))
 async def start(event):
     """Send a message when the command /help is issued."""
     await event.respond("The following commands are at your disposal: /start, /tip and /balance \n \n Initiating command /tip has a specfic format,\n use it like so:" + "\n \n Parameters: \n <user> = target user to tip \n <amount> = amount of votes to send \n \n Tipping format: \n /tip <user> <amount>")
     raise events.StopPropagation
 
-@bot.on(events.NewMessage(pattern='/tip'+'@'+'bot.get_me().username))
+@bot.on(events.NewMessage(pattern='/tip'+'@'+bot.get_me().username))
 async def start(event):
     """Send a message when the command /tip is issued."""
     await event.respond("The following commands are at your disposal: /start, /tip and /balance \n \n Initiating command /tip has a specfic format,\n use it like so:" + "\n \n Parameters: \n <user> = target user to tip \n <amount> = amount of votes to send \n \n Tipping format: \n /tip <user> <amount>")
