@@ -52,8 +52,8 @@ def tip(bot,update):
 		elif "@" in target:
 			target = target[1:]
 			user = update.message.from_user.username
-			result = "1000"
-			balance = float((result.stdout.strip()).decode("utf-8"))
+			result = 1000
+			balance = float(result)
 			amount = float(amount)
 			if balance < amount:
 				bot.send_message(chat_id=update.message.chat_id, text="@{0} you have insufficent funds.".format(user))
