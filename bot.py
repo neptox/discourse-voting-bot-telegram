@@ -22,6 +22,12 @@ async def start(event):
     await event.respond('Hi!')
     raise events.StopPropagation
 
+@bot.on(events.NewMessage(pattern='/commands'))
+async def start(event):
+    """Send a message when the command /start is issued."""
+    await event.respond("Initiating commands /tip & /withdraw have a specfic format,\n use them like so:" + "\n \n Parameters: \n <user> = target user to tip \n <amount> = amount of powerledger to utilise \n <address> = powerledger address to withdraw to \n \n Tipping format: \n /tip <user> <amount> \n \n Withdrawing format: \n /withdraw <address> <amount>")
+    raise events.StopPropagation
+
 @bot.on(events.NewMessage)
 async def echo(event):
     """Echo the user message."""
@@ -37,12 +43,6 @@ if __name__ == '__main__':
 
 
 
-
-@bot.on(events.NewMessage(pattern='/commands'))
-async def start(event):
-    """Send a message when the command /start is issued."""
-    await event.respond("Initiating commands /tip & /withdraw have a specfic format,\n use them like so:" + "\n \n Parameters: \n <user> = target user to tip \n <amount> = amount of powerledger to utilise \n <address> = powerledger address to withdraw to \n \n Tipping format: \n /tip <user> <amount> \n \n Withdrawing format: \n /withdraw <address> <amount>")
-    raise events.StopPropagation
 
 
 # def commands(bot, update):
