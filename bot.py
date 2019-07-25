@@ -7,7 +7,7 @@ from telegram.ext import Updater
 from html import escape
 
 #LOAD API & BOT SECRETS
-with open("~/voting_bot/discourse-voting-bot-telegram/telegram-secrets.json", 'r') as secretsFile:
+with open("/home/bot/voting_bot/discourse-voting-bot-telegram/telegram-secrets.json", 'r') as secretsFile:
     secret = json.load(secretsFile)
 
 updater = Updater(token=secret.token)
