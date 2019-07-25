@@ -8,17 +8,17 @@ from telegram.ext.dispatcher import run_async
 from telegram.ext import Updater
 from html import escape
 
+def token(filename):
+    with open(filename, "r") as file:
+        token_temp = str(file.read()).strip('\n')
+        return token_temp
+
 updater = Updater(token=token("telegram-token.txt"))
 dispatcher = updater.dispatcher
 
 import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 					level=logging.INFO)
-
-def token(filename):
-    with open(filename, "r") as file:
-        token_temp = str(file.read()).strip('\n')
-        return token_temp
 
 def commands(bot, update):
 	user = update.message.from_user.username
