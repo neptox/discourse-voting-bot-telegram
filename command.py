@@ -125,9 +125,6 @@ dispatcher.add_handler(hi_handler)
 withdraw_handler = CommandHandler('withdraw', withdraw)
 dispatcher.add_handler(withdraw_handler)
 
-marketcap_handler = CommandHandler('marketcap', marketcap)
-dispatcher.add_handler(marketcap_handler)
-
 deposit_handler = CommandHandler('deposit', deposit)
 dispatcher.add_handler(deposit_handler)
 
