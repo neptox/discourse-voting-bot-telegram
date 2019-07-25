@@ -46,7 +46,7 @@ def tip(bot,update):
 	if user is None:
 		bot.send_message(chat_id=update.message.chat_id, text="Please set a telegram username in your profile settings!")
 	else:
-		machine = "@CROWNS_tip_bot"
+		machine = "@VoteAndTipBot"
 		if target == machine:
 			bot.send_message(chat_id=update.message.chat_id, text="HODL.")
 		elif "@" in target:
@@ -63,7 +63,7 @@ def tip(bot,update):
 				balance = str(balance)
 				amount = str(amount)
 				tx = "move"
-				bot.send_message(chat_id=update.message.chat_id, text="@{0} tipped @{1} of {2} crowns".format(user, target, amount))
+				bot.send_message(chat_id=update.message.chat_id, text="@{0} tipped @{1} of {2} VOTES".format(user, target, amount))
 		else:
 			bot.send_message(chat_id=update.message.chat_id, text="Error that user is not applicable.")
 
@@ -77,7 +77,7 @@ def balance(bot,update):
 		fiat_balance = balance * price
 		fiat_balance = str(round(fiat_balance,3))
 		balance =  str(round(balance,3))
-		bot.send_message(chat_id=update.message.chat_id, text="@{0} your current balance is: {1} CROWNS ≈  ${2}".format(user,balance,fiat_balance))
+		bot.send_message(chat_id=update.message.chat_id, text="@{0} your current balance is: {1} VOTES ≈  ${2}".format(user,balance,fiat_balance))
 
 def price(bot,update):
 	price = 10
@@ -103,7 +103,7 @@ def withdraw(bot,update):
 			bot.send_message(chat_id=update.message.chat_id, text="@{0} you have insufficent funds.".format(user))
 		else:
 			amount = str(amount)
-			bot.send_message(chat_id=update.message.chat_id, text="@{0} has successfully withdrew to address: {1} of {2} CROWNS" .format(user,address,amount))
+			bot.send_message(chat_id=update.message.chat_id, text="@{0} has successfully withdrew to address: {1} of {2} VOTES" .format(user,address,amount))
 
 def hi(bot,update):
 	user = update.message.from_user.username
