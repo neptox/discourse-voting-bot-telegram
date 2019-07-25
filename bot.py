@@ -19,7 +19,7 @@ bot = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
 admins = client.get_participants(chat, filter=ChannelParticipantsAdmins)
 
-@bot.on(events.NewMessage(from_users=admins,pattern='/start'+'@'+'bot.get_me().username))
+@bot.on(events.NewMessage(from_users=admins,pattern='/start'+'@'+bot.get_me().username))
 async def start(event):
     """Send a message when the command /start is issued."""
     await event.respond('Hi!')
