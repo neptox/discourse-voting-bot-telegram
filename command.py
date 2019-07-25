@@ -3,9 +3,7 @@
 import json
 import codecs
 import requests
-from bs4 import BeautifulSoup, SoupStrainer
 import re
-import subprocess
 from telegram.ext.dispatcher import run_async
 from telegram.ext import Updater
 from html import escape
@@ -35,7 +33,7 @@ def deposit(bot, update):
 		bot.send_message(chat_id=update.message.chat_id, text="Please set a telegram username in your profile settings!")
 	else:
 		address = "/usr/local/bin/etheruemd"
-		result = subprocess.run([address,"getaccountaddress",user],stdout=subprocess.PIPE)
+		result = "getAccountAddress"
 		clean = (result.stdout.strip()).decode("utf-8")
 		bot.send_message(chat_id=update.message.chat_id, text="@{0} your depositing address is: {1}".format(user,clean))
 
@@ -53,8 +51,7 @@ def tip(bot,update):
 		elif "@" in target:
 			target = target[1:]
 			user = update.message.from_user.username
-			core = "/usr/local/bin/ethereumd"
-			result = subprocess.run([core,"getbalance",user],stdout=subprocess.PIPE)
+			result = "1000"
 			balance = float((result.stdout.strip()).decode("utf-8"))
 			amount = float(amount)
 			if balance < amount:
@@ -64,47 +61,30 @@ def tip(bot,update):
 			else:
 				balance = str(balance)
 				amount = str(amount)
-				tx = subprocess.run([core,"move",user,target,amount],stdout=subprocess.PIPE)
+				tx = "move"
 				bot.send_message(chat_id=update.message.chat_id, text="@{0} tipped @{1} of {2} POWR".format(user, target, amount))
 		else:
 			bot.send_message(chat_id=update.message.chat_id, text="Error that user is not applicable.")
 
 def balance(bot,update):
-	quote_page = requests.get('https://www.worldcoinindex.com/coin/powerledger')
-	strainer = SoupStrainer('div', attrs={'class': 'row mob-coin-table'})
-	soup = BeautifulSoup(quote_page.content, 'html.parser', parse_only=strainer)
-	name_box = soup.find('div', attrs={'class':'col-md-6 col-xs-6 coinprice'})
-	name = name_box.text.replace("\n","")
-	price = re.sub(r'\n\s*\n', r'\n\n', name.strip(), flags=re.M)
-	price = re.sub("[^0-9^.]", "", price)
-	price = float(price)
+	price = float(100)
 	user = update.message.from_user.username
 	if user is None:
 		bot.send_message(chat_id=update.message.chat_id, text="Please set a telegram username in your profile settings!")
 	else:
-		core = "/usr/local/bin/ethereumd"
-		result = subprocess.run([core,"getbalance",user],stdout=subprocess.PIPE)
-		clean = (result.stdout.strip()).decode("utf-8")
-		balance  = float(clean)
+		balance  = float(1000)
 		fiat_balance = balance * price
 		fiat_balance = str(round(fiat_balance,3))
 		balance =  str(round(balance,3))
 		bot.send_message(chat_id=update.message.chat_id, text="@{0} your current balance is: {1} POWR ≈  ${2}".format(user,balance,fiat_balance))
 
 def price(bot,update):
-	quote_page = requests.get('https://www.worldcoinindex.com/coin/powerledger')
-	strainer = SoupStrainer('div', attrs={'class': 'row mob-coin-table'})
-	soup = BeautifulSoup(quote_page.content, 'html.parser', parse_only=strainer)
-	name_box = soup.find('div', attrs={'class':'col-md-6 col-xs-6 coinprice'})
-	name = name_box.text.replace("\n","")
-	price = re.sub(r'\n\s*\n', r'\n\n', name.strip(), flags=re.M)
-	fiat = soup.find('span', attrs={'class': ''})
-	kkz = fiat.text.replace("\n","")
-	percent = re.sub(r'\n\s*\n', r'\n\n', kkz.strip(), flags=re.M)
-	quote_page = requests.get('https://bittrex.com/api/v1.1/public/getticker?market=btc-powr')
-	soup = BeautifulSoup(quote_page.content, 'html.parser').text
-	btc = soup[80:]
-	sats = btc[:-2]
+	price = 10
+	fiat = "EUR"
+	kkz = ("eur")
+	percent = 5
+	btc = 200
+	sats = 200023
 	bot.send_message(chat_id=update.message.chat_id, text="Powerledger is valued at {0} Δ {1} ≈ {2}".format(price,percent,sats) + " ฿")
 
 def withdraw(bot,update):
@@ -117,15 +97,11 @@ def withdraw(bot,update):
 		address = ''.join(str(e) for e in address)
 		target = target.replace(target[:35], '')
 		amount = float(target)
-		core = "/usr/local/bin/ethereumd"
-		result = subprocess.run([core,"getbalance",user],stdout=subprocess.PIPE)
-		clean = (result.stdout.strip()).decode("utf-8")
-		balance = float(clean)
+		balance = float(1000)
 		if balance < amount:
 			bot.send_message(chat_id=update.message.chat_id, text="@{0} you have insufficent funds.".format(user))
 		else:
 			amount = str(amount)
-			tx = subprocess.run([core,"sendfrom",user,address,amount],stdout=subprocess.PIPE)
 			bot.send_message(chat_id=update.message.chat_id, text="@{0} has successfully withdrew to address: {1} of {2} POWR" .format(user,address,amount))
 
 def hi(bot,update):
@@ -134,15 +110,6 @@ def hi(bot,update):
 
 def moon(bot,update):
   bot.send_message(chat_id=update.message.chat_id, text="Moon mission inbound!")
-
-def marketcap(bot,update):
-	quote_page = requests.get('https://www.worldcoinindex.com/coin/powerledger')
-	strainer = SoupStrainer('div', attrs={'class': 'row mob-coin-table'})
-	soup = BeautifulSoup(quote_page.content, 'html.parser', parse_only=strainer)
-	name_box = soup.find('div', attrs={'class':'col-md-6 col-xs-6 coin-marketcap'})
-	name = name_box.text.replace("\n","")
-	mc = re.sub(r'\n\s*\n', r'\n\n', name.strip(), flags=re.M)
-	bot.send_message(chat_id=update.message.chat_id, text="The current market cap of PowerLedger is valued at {0}".format(mc))
 
 from telegram.ext import CommandHandler
 
