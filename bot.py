@@ -10,7 +10,7 @@ from html import escape
 with open("/home/bot/voting_bot/discourse-voting-bot-telegram/telegram-secrets.json", 'r') as secretsFile:
     secret = json.load(secretsFile)
 
-updater = Updater(token=secret.token)
+updater = Updater(token=secret["token"])
 dispatcher = updater.dispatcher
 
 
